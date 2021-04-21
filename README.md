@@ -34,7 +34,7 @@ Funkce Process
 - najde odpovídající koncový flag např. [[A:osoby]] zde jsou v poli vypsané osoby [[E:osoby]]
 - určí o jakou strukturu se jedná - array, object, item a obsah mezi flagy odešle do přísl. fce
 - vstupní string data si zkrátí o zpracované části (vymaže z něj to, co je vyřešené) a 
-  opakuje celý proces, dokud není str data celý zpracovaný - tzn, je prázdný
+  opakuje celý proces, dokud není str data celý zpracovaný - tzn. je prázdný
 
 - dále jsou ve scriptu fce Array, Object a Item
 - ty jako parametry přijímají str data a str key
