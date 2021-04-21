@@ -1,7 +1,7 @@
 # JSON2RTF_Lib
 =================================================
 
-Script pro vytváření dokumentů na základě šablon a dat uložených v JSON
+Script pro vytváření dokumentů na základě šablon a dat uložených v JSON.
 Program by měl být schopný pracovat s rtf dokumenty a podle JSON struktury je vyplňovat
 
 
