@@ -141,7 +141,7 @@ input.LoadFile("test3.rtf")
 
 while(input.m_data != ""):
     input.m_data = Process(input.m_data)
-    ##break
+    break
 
 
 print("\n\n\nInput\n======================")
