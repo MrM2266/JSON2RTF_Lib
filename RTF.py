@@ -27,22 +27,29 @@ class CData:
 
 class CjsonReader:
     def __init__(self):
-        m_data = 0
+        self.pocet = 0 ## pro ladeni
 
-    def Array(self):
-        ## tato fce se zavolá, jakmile se v rtf narazí na pole
-        ## json a rtf musí navzájem sedět - první prvek v rtf je array -> první prvek v json je taky array
-        ## jsonReader načte pole z json
-        print("Hledam v poli")
+    def Array(self, arrayName):
+        ## tato fce se zavolá, jakmile se v rtf narazí na pole; key je název pole v json
+        ## fce vrací počet prvků v poli
+        print("Hledam v poli", arrayName)
+        return 2 #vrací počet prvků pole
 
-    def Object(self):
-        print("Hledam v objektu")
+    def Object(self, objectName):
+        print("Hledam v objektu", objectName)
 
-    def Item(self, name):
-        print("Hledam polozku {0}", name)
+    def Item(self, itemName):
+        ## vrací hodnotu z json "itemName":"hodnota_pro_vraceni"
+        self.pocet += 1 ##pro ladeni
+        return itemName + str(self.pocet)
 
     def LoadFile(self, filename):
         print("Nacitani json souboru")
+
+    def ArrayAsString(self, arrayName):
+        ## vrátí celé pole jako string
+        ## pro případ "auta":[ "Ford", "BMW", "Fiat" ] -> vrací string "Ford BMW Fiat"
+        return ("Vypsane prvky pole " + arrayName + " ")
 
 
  
@@ -58,6 +65,9 @@ def FlagStart(data):
          return None
 
 def FlagEnd(data, key):
+    ## vrací pozici koncového tagu zadaného klíče
+    ## vrací začátek a konec tagu
+    print(data)
     str = "[[E:" + key + "]]"
     return [data.find(str), data.find(str) + len(str)]
 
@@ -82,7 +92,7 @@ def Process(data):
     
     else:
         output.Add(data)
-        output.WriteToFile("output.rtf")
+        ##output.WriteToFile("output.rtf")
         return ""
 
 ##všechny fce mají jako parametr string
@@ -94,44 +104,29 @@ def Process(data):
     ## data=data[len(data):len(data)]
     ##   if data == "":
     ##   print("1")
-    ## loop dokud není string data prázdný
-    ## najde si nejbližší flag - to před ním opíše tolikrát, kolik je prvků v json
-    ## část textu mezi flagy odešle do dané fce
-    ## vyřešený úsek textu si vymaže z str data data=data[start:]
-    ## pokud už nemá flagy, opíše to co mu zbylo tolikrát, kolik má prvků v json - tím se vyprázdní str data - fce se ukončí
-    ## pokud ještě má flag - loop běží znovu - opíše to před flagem atd.
 
 def Array(data, key):
-    cislo_prvku = 1 ##from json
-    ## pole má data pro zpracování a ví, jaký má klíč v json - klíč pošle do json, vrátí se mu počet opakování
-    ## začne zpracovávat data - pošle je do process - process opíše to co je před prvním flagem, 
-    ## for (i=0 ; i < pocet_opakovani_json - 1; i++):
-    ##      Process(data)
-    ## data = Process(data)
-    print(key)
-    print("Array\n===============")
-    print(data) ##remove
-    print("\n\n")
-    output.Add("   ===|||KOD Z POLE: ")
-    output.Add(key)
-    output.Add("|||===    ")
+    pocet_prvku = json.Array(key) ##jsme v poli key - vrátí počet prvků v poli
+        
+    if data != "":
+        for i in range(0,pocet_prvku):
+            temp = data
+            while (temp != ""):
+                temp = Process(temp)
+
+    else:
+        output.Add(json.ArrayAsString(key))
+
     
 
 def Object(data, key):
-    print(key)
-    print("Object\n===============")
-    print(data) ##remove
-    print("\n\n")
-    output.Add("   ===|||KOD Z OBJEKTU: ")
-    output.Add(key)
-    output.Add("|||===    ")
+    json.Object(key)
+
+    while (data != ""):
+        data = Process(data)
 
 def Item(key):
-    print(key)
-    print("Item\n===============\n\n")
-    output.Add("   ===|||KOD Z POLOZKY: ")
-    output.Add(key)
-    output.Add("|||===    ")
+    output.Add(json.Item(key))
 
 
 
@@ -140,12 +135,13 @@ def Item(key):
 
 input = CData()
 output = CData()
+json = CjsonReader()
 
-input.LoadFile("test2.rtf")
+input.LoadFile("test3.rtf")
 
 while(input.m_data != ""):
     input.m_data = Process(input.m_data)
-    break
+    ##break
 
 
 print("\n\n\nInput\n======================")

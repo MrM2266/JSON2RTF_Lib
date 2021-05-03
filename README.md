@@ -38,11 +38,36 @@ Funkce Process
 - dále jsou ve scriptu fce Array, Object a Item
 - ty jako parametry přijímají str data a str key
 
+
+Update 3.5.
+=================================================
+- doplněny funkce Array, object a Item
+- pokrytí některých mezních případů v RTF
+
+Item
+=========
+- značka pro označení místa, který má být nahrazeno daty z json
+- při použití [[I:klíč]] očekáváme, že v json je "klíč":"string nebo číslo, které se vypíše"
+- rtf kód [[I:jmeno]] se nahradí pomocí json "jmeno":"Pavel" na Pavel
+
+
+Array
+========
+- [[A:osoby]] označuje pole, které odpovídá klíči osoby tzn. json "osoby":["jmeno":"Petr","jmeno":"Pavel"]
+- rtf kód, který je mezi [[A:osoby]] [[E:osoby]] popisuje, co se má dělat s jedním prvkem pole - kód se zopakuje tolikrát, kolik má pole v json prvků - zde dvakrát - pro každý prvek pole jednou
+- rtf kód [[A:auta]][[E:auta]] odpovídá json "auta":[ "Ford", "BMW", "Fiat" ] - výstupem jsou vypsané prvky pole auta; zavolá se fce ArrayAsStr - očekáváme, že pole obsahuje stringy nebo čísla, která se pouze vypíšou
+- sytax: [[A:key]]popis jednoho prvku pole[[E:key]]
+
+Object
+========
+- rtf kód [[O:osoba]] zavolá fci jsonReader.Object(osoba) - reader ví, že jsme v objektu "osoba":{"jmeno":Petr, "pratele":["Jan", "Helena"]}
+- rtf kód [[O:null]] označuje objekt bez jména: v json {"jmeno":Petr, "pratele":["Jan", "Helena"]} - zavolá fci jsonReader.Object(none) ?? - reader ví, že má vzít první objekt v pořadí
+- [[E:null]] ukončuje čtení objektu 
+
+
 TODO:
 ================
-- fce Array, Object a Item odešlou key do JSONReader a ten vrátí data z JSON
-- zde se bude zpracovávat obsah jednotlivých struktrur a bude se procházet str data pomocí fce
-  Process - ta opět najde případné flagy a odešle danou část do příslušné fce - rtf se takto bude rozbalovat
 - čtení z JSON
-- ujasnit si, co má program dělat v array a object
-- struktury bez klíčů - podpora pro [[A]] a [[A_E]]
+- ujasnit si, co má program dělat v object
+- vytvořit key null - JSON Reader bude brát prvky postupně - díky A:employees ví, že je v poli employees a tam jde postupně - objekt po objektu
+- doplnit boolean flag [[B:pritomen]]
