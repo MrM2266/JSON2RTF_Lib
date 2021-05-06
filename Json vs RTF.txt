@@ -1,8 +1,0 @@
-"employees":[
-    {"firstName":"John", "lastName":"Doe"},
-    {"firstName":"Anna", "lastName":"Smith"},
-    {"firstName":"Peter", "lastName":"Jones"}
-]
-
-
-[[A:employees]][[O:null]] jmeno: [[I:firstName]] prijmeni: [[I:lastName]] [[E:null]][[E:employees]]

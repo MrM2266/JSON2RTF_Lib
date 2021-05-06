@@ -1,17 +1,19 @@
 import re
+import json
 
 class CData:
     def __init__(self):
         self.m_data=""
+        self.m_filename=""
 
     def Add(self, add): ##prijme string, ktery si prida do m_data
-        self.m_data += add
+        self.m_data += str(add)
 
     def Print(self):
         print(self.m_data)
 
-    def WriteToFile(self, path): ##zapíše m_data do zadaného souboru
-        file = open(path, "w")
+    def WriteToFile(self): ##zapíše m_data do zadaného souboru
+        file = open(self.m_filename, "w")
         file.write(self.m_data)
         file.close();
 
@@ -20,36 +22,56 @@ class CData:
         self.m_data = file.read() ##toto je string print(type(data))
         file.close()
 
-    def Remove(self, start): ##odstraní část stringu - vše od start zůstane zachováno
-        self.m_data=self.m_data[start:]
-
+    def SetFilename(self, filename):
+        self.m_filename = filename
 
 
 class CjsonReader:
     def __init__(self):
-        self.pocet = 0 ## pro ladeni
-
-    def Array(self, arrayName):
-        ## tato fce se zavolá, jakmile se v rtf narazí na pole; key je název pole v json
-        ## fce vrací počet prvků v poli
-        print("Hledam v poli", arrayName)
-        return 2 #vrací počet prvků pole
-
-    def Object(self, objectName):
-        print("Hledam v objektu", objectName)
-
-    def Item(self, itemName):
-        ## vrací hodnotu z json "itemName":"hodnota_pro_vraceni"
-        self.pocet += 1 ##pro ladeni
-        return itemName + str(self.pocet)
+        self.m_levels = [] ##list jednotlivých levelů ## current je vždy poslední prvek pole ##co jeden prvek, to jeden level
+        self.m_level = 0
+        self.m_indexes = [0] ##list indexů - index 0 obsahuje hodnotu 2 -> na levelu 0 jsem na indexu 2
 
     def LoadFile(self, filename):
-        print("Nacitani json souboru")
+        with open(filename) as file:
+            self.m_levels.append(json.load(file))
 
-    def ArrayAsString(self, arrayName):
-        ## vrátí celé pole jako string
-        ## pro případ "auta":[ "Ford", "BMW", "Fiat" ] -> vrací string "Ford BMW Fiat"
-        return ("Vypsane prvky pole " + arrayName + " ")
+    def Down(self, key): ##půjde o úroveň dolů - na zadaný key nebo index ->vstup je index nebo key
+        self.m_levels.append(self.m_levels[self.m_level][key])
+        self.m_indexes.append(0)
+        self.m_level += 1
+
+    def Up(self): ##půjde o úroveň nahoru
+        if self.m_level > 0:
+            del self.m_levels[-1]
+            del self.m_indexes[-1]
+            self.m_level -= 1
+        else:
+            print("\nERROR: Up was blocked\n")
+
+    def GetItem(self, key): ##vrátí položku podle klíče z aktuálního levelu - vrací pole i objekty
+        return self.m_levels[self.m_level][key]
+
+    def GetArraySize(self, key):
+        return len(self.m_levels[self.m_level][key])
+
+    def GetRootSize(self):
+        return len(self.m_levels[0])
+
+    def GetArrayAsStr(self, key):
+        result = ""
+        for i in self.m_levels[self.m_level][key]:
+            result = result + str(i) + ", "
+        return result[:-2]
+
+    def PrintLast(self): ##vypíše poslední položku m_levels tzn. aktuálně zpracovávaný level
+        print("Level: " + str(self.m_level) + " || " + str(self.m_levels[-1]) + "\n")
+
+    def NextElement(self): ##v aktuálním levelu (pouze array) se posune o jeden prvek dopředu
+        self.m_indexes[self.m_level] += 1
+
+    def GetIndex(self):
+        return self.m_indexes[self.m_level]
 
 
  
@@ -58,18 +80,43 @@ def FlagStart(data):
     ## pokud nenajde - vrací none
      match = re.search("\[{2}((A:[a-zA-Z0-9]+)|(O:[a-zA-Z0-9]+)|(I:[a-zA-Z0-9]+))\]{2}", data)
      if match:
-         flag = data[match.start():match.start() + 3]
+         flag = data[match.start() + 2 : match.start() + 3]
          key = data[match.start() + 4 : match.end() - 2]
          return [flag, key, match.start(), match.end()]
      else:
          return None
 
+
 def FlagEnd(data, key):
     ## vrací pozici koncového tagu zadaného klíče
     ## vrací začátek a konec tagu
-    print(data)
-    str = "[[E:" + key + "]]"
-    return [data.find(str), data.find(str) + len(str)]
+    if (key == "null"):
+        list = []
+        start=[]
+        end=[]
+
+        for match in re.finditer("\[{2}(A|O):null\]{2}", data):
+            s = match.start()
+            list.append(s)
+            start.append(s)
+        for match in re.finditer("\[{2}E:null\]{2}", data):
+            s = match.start()
+            list.append(s)
+            end.append(s)
+
+        list.sort()
+        count=0
+
+        for i in list:
+            if i in start:
+                count += 1
+            if i in end:
+                count -= 1
+            if (count == 0):
+                return [i,i+10]
+    else:
+        str = "[[E:" + key + "]]"
+        return [data.find(str), data.find(str) + len(str)]
 
 def Process(data):
     ## přijme str data a zpracuje ho - najde první flag a k němu koncový flag - to co je před ním dá to output
@@ -78,56 +125,64 @@ def Process(data):
     if start != None:
         output.Add(data[0:start[2]])
     
-        if start[0] != "[[I":
+        if start[0] != "I":
             end = FlagEnd(data, start[1])
-            if start[0] == "[[A":
+            if start[0] == "A":
                 Array(data[start[3]:end[0]], start[1])
-            if start[0] == "[[O":
+            if start[0] == "O":
                 Object(data[start[3]:end[0]], start[1])
             return data[end[1]:]
-    
         else:
             Item(start[1])
             return data[start[3]:]
-    
     else:
         output.Add(data)
-        ##output.WriteToFile("output.rtf")
+        output.WriteToFile()
         return ""
 
-##všechny fce mají jako parametr string
-    ## zde se bude procházet string data - podle json se bude opisovat
-    ## vyhodnocovací loop pro flagy - najde flag, najde konec a odešle do příslušné fce
-    ## zapisuje do output pomocí output.Add - fce má přístup do output
-    ## jakmile nějakou část vyřeší - opíše nebo předá do jiné fce, tak si zkrátí string data - vymaže vyřešený text
-    ## fce pojede v loopu dokud nebude mít string data prázdný:
-    ## data=data[len(data):len(data)]
-    ##   if data == "":
-    ##   print("1")
-
 def Array(data, key):
-    pocet_prvku = json.Array(key) ##jsme v poli key - vrátí počet prvků v poli
-        
+    ##jsme v poli key - vrátí počet prvků v poli
     if data != "":
-        for i in range(0,pocet_prvku):
+        if (key == "root"):
+            pocet_prvku = jsonData.GetRootSize()
+        if (key == "null"):
+            pocet_prvku = jsonData.GetArraySize(jsonData.GetIndex())
+            jsonData.Down(jsonData.GetIndex()) ##do rootu se dostanu otevřením souboru - zde musím udělat krok sám
+        if (key != "null" and key != "root"): ##je to pole v objektu
+            pocet_prvku = jsonData.GetArraySize(key)
+            jsonData.Down(key)
+
+        for i in range(0, pocet_prvku):
             temp = data
             while (temp != ""):
                 temp = Process(temp)
+                jsonData.NextElement()
+
+        if (key != "root"):
+            jsonData.Up() ##pole je vyřešené -> lezeme nahoru o jednu úroveň
 
     else:
-        output.Add(json.ArrayAsString(key))
+        output.Add(jsonData.GetArrayAsStr(key))
 
     
 
 def Object(data, key):
-    json.Object(key)
+    if (key == "root"):
+        pass
+    if (key == "null"):
+        jsonData.Down(jsonData.GetIndex()) ##do rootu se dostanu otevřením souboru - zde musím udělat krok sám
+    if (key != "null" and key != "root"):
+        jsonData.Down(key)
 
     while (data != ""):
         data = Process(data)
 
-def Item(key):
-    output.Add(json.Item(key))
+    if (key != "root"):
+        jsonData.Up()
 
+
+def Item(key):
+    output.Add(jsonData.GetItem(key))
 
 
 
@@ -135,16 +190,17 @@ def Item(key):
 
 input = CData()
 output = CData()
-json = CjsonReader()
+jsonData = CjsonReader()
 
-input.LoadFile("test3.rtf")
+input.LoadFile("kartaZamestnancu.rtf")
+output.SetFilename("output.rtf")
+jsonData.LoadFile("data1.json")
 
 while(input.m_data != ""):
     input.m_data = Process(input.m_data)
-    ##break
 
 
-print("\n\n\nInput\n======================")
-input.Print()
-print("\n\n\nOutput\n=====================")
-output.Print()
+##print("\n\n\nInput\n======================")
+##input.Print()
+##print("\n\n\nOutput\n=====================")
+##output.Print()

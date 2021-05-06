@@ -1,0 +1,99 @@
+[
+
+  {
+    "name": "Pavel",
+    "surname": "Novak",
+    "children": [ "Jana", "Hana" ],
+    "car": {
+      "brand": "BMW",
+      "type": "435i",
+      "fuel": "benzín",
+      "engine": {
+        "cylinders": 6,
+        "gearbox": "manualni",
+        "power": "215 kW"
+      }
+    }
+  },
+
+  {
+    "name": "Petr",
+    "surname": "Veliky",
+    "children": [ "Adam", "Tom" ],
+    "car": {
+      "brand": "Mercedes",
+      "type": "S class",
+      "fuel": "motorová nafta",
+      "engine": {
+        "cylinders": 8,
+        "gearbox": "automaticka",
+        "power": "280 kW"
+      }
+    }
+  },
+
+  {
+    "name": "Jan",
+    "surname": "Maly",
+    "children": [ "Dan", "Josef" ],
+    "car": {
+      "brand": "Tesla",
+      "type": "Model s performance",
+      "fuel": "elektrina",
+      "engine": {
+        "cylinders": null,
+        "gearbox": null,
+        "power": "615 kW"
+      }
+    }
+  },
+
+  {
+    "name": "Lucie",
+    "surname": "Novakova",
+    "children": [ "Tereza" ],
+    "car": {
+      "brand": "Renault",
+      "type": "Clio",
+      "fuel": "benzín",
+      "engine": {
+        "cylinders": 4,
+        "gearbox": "manualni",
+        "power": "110 kW"
+      }
+    }
+  },
+
+  {
+    "name": "Karolina",
+    "surname": "Svetla",
+    "children": [ "Alena" ],
+    "car": {
+      "brand": "Skoda",
+      "type": "Scala",
+      "fuel": "benzín",
+      "engine": {
+        "cylinders": 4,
+        "gearbox": "automaticka",
+        "power": "110 kW"
+      }
+    }
+  },
+
+  {
+    "name": "Tomas",
+    "surname": "Novy",
+    "children": [],
+    "car": {
+      "brand": "Peugeot",
+      "type": "3008",
+      "fuel": "benzín + elektrina",
+      "engine": {
+        "cylinders": 4,
+        "gearbox": "automaticka",
+        "power": "115 kW"
+      }
+    }
+  }
+
+]

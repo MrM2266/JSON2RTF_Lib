@@ -65,9 +65,44 @@ Object
 - [[E:null]] ukončuje čtení objektu 
 
 
+Update 6.5.
+=================================================
+- čtení z json - podle rtf se čte z json
+- funkce GetArrayAsString se chová nestandartně - je nutné ji odladit
+- V rootu musí být pouze pole nebo objekt - nechceme jen tak data bez ničeho
+
+Aktuálně script funguje na základě těchto pravidel pro RTF a JSON
+
+- Object - sturktura, která mi umožní tahat si data z neuspořádaného souboru; kód [[O:objekt]][[E:objekt]] neudělá nic
+- Array - struktura, která umožnuje provádět stejné operace pro každý prvek pole -> každý prvek pole musí být stejný - např. vše jen objekty
+  [[A:pole]] kód, který se provede pro každý prvek pole [[E:pole]]
+
+- Root
+  [[A:root]] - nepojmenované pole v rootu
+  [[O:root]] - nepojmenovaný objekt v rootu
+
+- Pole
+  [[A:null]] - nepojmenované pole v poli
+  [[O:null]] - nepojmenovaný objekt v poli
+  [[I:index]] - index čísla, stringu nebo booleanu pro vypsání
+
+- Objekt
+  [[A:key]] - pro pole v objektu - musí být pojmenovaný (musí mít strukturu key:value)
+  [[O:key]] - pro objekt v objektu - musí bý pojmenovaný
+  [[I:key]] - pro string a číslo v objektu - musé být pojmenovaný
+
+- Speciální syntax
+  [[A:key]][[E:key]] pro vypsání všech prvků pole - pole musí obsahovat pouze string, čísla, nebo boolean
+  [[E:key]] nebo [[E:null]] pro ukončení struktury
+  Item se neukončuje - místo něj se pouze doplní z json
+  Jako key nelze použít null
+  pro prázdné pole nepoužívat null, ale []
+
+
+
 TODO:
 ================
-- čtení z JSON
-- ujasnit si, co má program dělat v object
+- opravit fci GetArrayAsString
+- začít pracovat na API
 - vytvořit key null - JSON Reader bude brát prvky postupně - díky A:employees ví, že je v poli employees a tam jde postupně - objekt po objektu
 - doplnit boolean flag [[B:pritomen]]
