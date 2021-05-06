@@ -78,25 +78,25 @@ Aktuálně script funguje na základě těchto pravidel pro RTF a JSON
   [[A:pole]] kód, který se provede pro každý prvek pole [[E:pole]]
 
 - Root
-  [[A:root]] - nepojmenované pole v rootu
-  [[O:root]] - nepojmenovaný objekt v rootu
+  - [[A:root]] - nepojmenované pole v rootu
+  - [[O:root]] - nepojmenovaný objekt v rootu
 
 - Pole
-  [[A:null]] - nepojmenované pole v poli
-  [[O:null]] - nepojmenovaný objekt v poli
-  [[I:index]] - index čísla, stringu nebo booleanu pro vypsání
+  - [[A:null]] - nepojmenované pole v poli
+  - [[O:null]] - nepojmenovaný objekt v poli
+  - [[I:index]] - index čísla, stringu nebo booleanu pro vypsání
 
 - Objekt
-  [[A:key]] - pro pole v objektu - musí být pojmenovaný (musí mít strukturu key:value)
-  [[O:key]] - pro objekt v objektu - musí bý pojmenovaný
-  [[I:key]] - pro string a číslo v objektu - musé být pojmenovaný
+  - [[A:key]] - pro pole v objektu - musí být pojmenovaný (musí mít strukturu key:value)
+  - [[O:key]] - pro objekt v objektu - musí bý pojmenovaný
+  - [[I:key]] - pro string a číslo v objektu - musé být pojmenovaný
 
 - Speciální syntax
-  [[A:key]][[E:key]] pro vypsání všech prvků pole - pole musí obsahovat pouze string, čísla, nebo boolean
-  [[E:key]] nebo [[E:null]] pro ukončení struktury
-  Item se neukončuje - místo něj se pouze doplní z json
-  Jako key nelze použít null
-  pro prázdné pole nepoužívat null, ale []
+  - [[A:key]][[E:key]] pro vypsání všech prvků pole - pole musí obsahovat pouze string, čísla, nebo boolean
+  - [[E:key]] nebo [[E:null]] pro ukončení struktury
+  - Item se neukončuje - místo něj se pouze doplní z json
+  - Jako key nelze použít null
+  - pro prázdné pole nepoužívat null, ale []
 
 
 
