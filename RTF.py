@@ -64,8 +64,11 @@ class CjsonReader:
             result = result + str(i) + ", "
         return result[:-2]
 
-    def PrintLast(self): ##vypíše poslední položku m_levels tzn. aktuálně zpracovávaný level
-        print("Level: " + str(self.m_level) + " || " + str(self.m_levels[-1]) + "\n")
+    def GetRootAsStr(self):
+        result = ""
+        for i in self.m_levels[0]:
+            result = result + str(i) + ", "
+        return result[:-2]
 
     def NextElement(self): ##v aktuálním levelu (pouze array) se posune o jeden prvek dopředu
         self.m_indexes[self.m_level] += 1
@@ -118,6 +121,7 @@ def FlagEnd(data, key):
         str = "[[E:" + key + "]]"
         return [data.find(str), data.find(str) + len(str)]
 
+
 def Process(data):
     ## přijme str data a zpracuje ho - najde první flag a k němu koncový flag - to co je před ním dá to output
     ## obsah flagu pošle do fce a to za end flagem vrátí - usekne první flag a nechá ho zpracovat
@@ -137,18 +141,17 @@ def Process(data):
             return data[start[3]:]
     else:
         output.Add(data)
-        output.WriteToFile()
         return ""
 
 def Array(data, key):
-    ##jsme v poli key - vrátí počet prvků v poli
+    ##jsme v poli key
     if data != "":
         if (key == "root"):
             pocet_prvku = jsonData.GetRootSize()
-        if (key == "null"):
+        elif (key == "null"):
             pocet_prvku = jsonData.GetArraySize(jsonData.GetIndex())
             jsonData.Down(jsonData.GetIndex()) ##do rootu se dostanu otevřením souboru - zde musím udělat krok sám
-        if (key != "null" and key != "root"): ##je to pole v objektu
+        else: ##je to pole v objektu
             pocet_prvku = jsonData.GetArraySize(key)
             jsonData.Down(key)
 
@@ -156,22 +159,25 @@ def Array(data, key):
             temp = data
             while (temp != ""):
                 temp = Process(temp)
-                jsonData.NextElement()
+            jsonData.NextElement()
 
         if (key != "root"):
             jsonData.Up() ##pole je vyřešené -> lezeme nahoru o jednu úroveň
 
     else:
-        output.Add(jsonData.GetArrayAsStr(key))
+        if (key == "null"):
+            output.Add(jsonData.GetArrayAsStr(jsonData.GetIndex()))
+        elif (key == "root"):
+            output.Add(jsonData.GetRootAsStr())
+        else:
+            output.Add(jsonData.GetArrayAsStr(key))
 
     
 
 def Object(data, key):
-    if (key == "root"):
-        pass
     if (key == "null"):
         jsonData.Down(jsonData.GetIndex()) ##do rootu se dostanu otevřením souboru - zde musím udělat krok sám
-    if (key != "null" and key != "root"):
+    elif (key != "root"):
         jsonData.Down(key)
 
     while (data != ""):
@@ -192,13 +198,14 @@ input = CData()
 output = CData()
 jsonData = CjsonReader()
 
-input.LoadFile("kartaZamestnancu.rtf")
+input.LoadFile("sablona.rtf")
 output.SetFilename("output.rtf")
-jsonData.LoadFile("data1.json")
+jsonData.LoadFile("data.json")
 
 while(input.m_data != ""):
     input.m_data = Process(input.m_data)
 
+output.WriteToFile()
 
 ##print("\n\n\nInput\n======================")
 ##input.Print()

@@ -1,0 +1,31 @@
+{
+	"employees": [{
+			"name": "Radek",
+			"surname": "Toman",
+			"birthDate": "12.03.1998",
+			"adress": "Popelova 10",
+			"children": ["Petr", "Anna", "Jan"]
+		},
+		{
+			"name": "Lenka",
+			"surname": "Svobodova",
+			"birthDate": "02.11.1981",
+			"adress": "Sklarska 2",
+			"children": ["Josef", "Milan"]
+		},
+		{
+			"name": "Milada",
+			"surname": "Novakova",
+			"birthDate": "30.07.1992",
+			"adress": "Modelova 123",
+			"children": ["Natalie"]
+		},
+		{
+			"name": "Tomas",
+			"surname": "Krupica",
+			"birthDate": "10.10.1995",
+			"adress": "Nova ulice 9",
+			"children": []
+		}
+	]
+}

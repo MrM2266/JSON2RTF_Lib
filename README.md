@@ -44,6 +44,16 @@ Update 3.5.
 - doplněny funkce Array, object a Item
 - pokrytí některých mezních případů v RTF
 
+
+Update 18.5.
+=================================================
+- opraveny chyby při čtení z json
+- opraven zápis do souboru
+- upraveny některé podmínky v kódu
+- vytvořena nová šablona pro testování - sablona.rtf a k ní odpovídající data.json
+- doplněn soubor testy.xlsx - obsahuje seznam provedených testů - skript prochází všemi testy (červené položky opraveny - nefungovaly v předchozí verzi)
+
+
 Item
 =========
 - značka pro označení místa, který má být nahrazeno daty z json
@@ -102,7 +112,8 @@ Aktuálně script funguje na základě těchto pravidel pro RTF a JSON
 
 TODO:
 ================
-- opravit fci GetArrayAsString
-- začít pracovat na API
+- podpora pro české znaky při převodu z json do rtf
+- pracovat na API
+- otestovat program
 - vytvořit key null - JSON Reader bude brát prvky postupně - díky A:employees ví, že je v poli employees a tam jde postupně - objekt po objektu
 - doplnit boolean flag [[B:pritomen]]
