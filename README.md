@@ -109,11 +109,9 @@ Aktuálně script funguje na základě těchto pravidel pro RTF a JSON
   - pro prázdné pole nepoužívat null, ale []
 
 
-
-TODO:
-================
-- podpora pro české znaky při převodu z json do rtf
-- pracovat na API
-- otestovat program
-- vytvořit key null - JSON Reader bude brát prvky postupně - díky A:employees ví, že je v poli employees a tam jde postupně - objekt po objektu
-- doplnit boolean flag [[B:pritomen]]
+Update 22.7.
+=================================================
+- implementace FastAPI
+- implementace tokenu
+- vytvoření verze pro Docker
+- doplnění jupyter notebooku s dokumentací

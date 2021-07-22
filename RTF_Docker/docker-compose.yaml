@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  ServerRTF:
+    build: .
+    ports:
+      - "80:80"
+    image: "json2rtf_server"

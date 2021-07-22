@@ -2,12 +2,12 @@
 
   {
     "name": "Pavel",
-    "surname": "Novak",
+    "surname": "Novák",
     "children": [ "Jana", "Hana" ],
     "car": {
-      "brand": "BMW",
-      "type": "435i",
-      "fuel": "benzín",
+      "brand": "BMW ìšèøžýáíé",
+      "type": "435išš",
+      "fuel": "benzin",
       "engine": {
         "cylinders": 6,
         "gearbox": "manualni",
@@ -23,7 +23,7 @@
     "car": {
       "brand": "Mercedes",
       "type": "S class",
-      "fuel": "motorová nafta",
+      "fuel": "motorova nafta",
       "engine": {
         "cylinders": 8,
         "gearbox": "automaticka",
@@ -55,7 +55,7 @@
     "car": {
       "brand": "Renault",
       "type": "Clio",
-      "fuel": "benzín",
+      "fuel": "benzin",
       "engine": {
         "cylinders": 4,
         "gearbox": "manualni",
@@ -71,7 +71,7 @@
     "car": {
       "brand": "Skoda",
       "type": "Scala",
-      "fuel": "benzín",
+      "fuel": "benzin",
       "engine": {
         "cylinders": 4,
         "gearbox": "automaticka",
@@ -87,7 +87,7 @@
     "car": {
       "brand": "Peugeot",
       "type": "3008",
-      "fuel": "benzín + elektrina",
+      "fuel": "benzin + elektrina",
       "engine": {
         "cylinders": 4,
         "gearbox": "automaticka",

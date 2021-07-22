@@ -1,0 +1,5 @@
+FastAPI==0.66
+json5==0.9.5
+jsonschema==3.2.0
+ujson==4.0.2
+python-multipart==0.0.5
