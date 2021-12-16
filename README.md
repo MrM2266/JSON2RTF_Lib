@@ -117,4 +117,4 @@ Update 22.7. 2021
 - vytvoření verze pro Docker
 - doplnění jupyter notebooku s dokumentací
 
--prozatím finální verze
+- prozatím finální verze
