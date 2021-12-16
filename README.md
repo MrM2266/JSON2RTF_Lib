@@ -1,16 +1,16 @@
 # JSON2RTF_Lib
 =================================================
 
-Script pro vytváření dokumentů na základě šablon a dat uložených v JSON
+Script pro vytváření dokumentů na základě šablon a dat uložených v JSON.
 Program by měl být schopný pracovat s rtf dokumenty a podle JSON struktury je vyplňovat
 
 
-Update 20.4.
+Update 20.4. 2021
 =================================================
 - první pokus o dosažení základní funkcionality programu
 
 
-Update 21.4.
+Update 21.4. 2021
 =================================================
 - definována třída CData - instance input a output - třída poskytuje metody pro čtení dat
   ze souboru a pro zápis
@@ -40,13 +40,13 @@ Funkce Process
 - ty jako parametry přijímají str data a str key
 
 
-Update 3.5.
+Update 3.5. 2021
 =================================================
 - doplněny funkce Array, object a Item
 - pokrytí některých mezních případů v RTF
 
 
-Update 18.5.
+Update 18.5. 2021
 =================================================
 - opraveny chyby při čtení z json
 - opraven zápis do souboru
@@ -76,7 +76,7 @@ Object
 - [[E:null]] ukončuje čtení objektu 
 
 
-Update 6.5.
+Update 6.5. 2021
 =================================================
 - čtení z json - podle rtf se čte z json
 - funkce GetArrayAsString se chová nestandartně - je nutné ji odladit
@@ -110,9 +110,11 @@ Aktuálně script funguje na základě těchto pravidel pro RTF a JSON
   - pro prázdné pole nepoužívat null, ale []
 
 
-Update 22.7.
+Update 22.7. 2021
 =================================================
 - implementace FastAPI
 - implementace tokenu
 - vytvoření verze pro Docker
 - doplnění jupyter notebooku s dokumentací
+
+-prozatím finální verze
